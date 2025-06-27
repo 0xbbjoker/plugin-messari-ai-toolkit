@@ -30,7 +30,7 @@ elizaos plugins add @elizaos-plugins/plugin-messari-ai-toolkit
 ### Manual Installation
 
 ```bash
-pnpm add github:messari/plugin-messari-ai-toolkit
+bun add github:messari/plugin-messari-ai-toolkit
 ```
 
 ## ⚙️ Configuration
@@ -90,23 +90,23 @@ Agent: [Gives current Total Value Locked data for Arbitrum]
 
 ```bash
 # Install dependencies
-pnpm install
+bun install
 
 # Build the plugin
-pnpm build
+bun build
 
 # Development mode with auto-rebuild
-pnpm dev
+bun dev
 ```
 
 ### Testing
 
 ```bash
 # Run tests
-pnpm test
+bun test
 
 # Run with coverage
-pnpm test:coverage
+bun test:coverage
 ```
 
 ## 🔍 Troubleshooting
