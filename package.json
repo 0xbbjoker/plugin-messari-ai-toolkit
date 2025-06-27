@@ -1,53 +1,82 @@
 {
-    "name": "@elizaos-plugins/plugin-messari-ai-toolkit",
-    "version": "0.0.2",
-    "type": "module",
-    "main": "dist/index.js",
-    "module": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "agentConfig": {
-        "pluginType": "elizaos:plugin:1.0.9",
-        "pluginParameters": {
-            "MESSARI_API_KEY": {
-                "type": "string",
-                "description": "API key for accessing Messari's AI Toolkit services"
-            }
-        }
-    },
-    "exports": {
-        ".": {
-            "types": "./dist/index.d.ts",
-            "import": "./dist/index.js",
-            "require": "./dist/index.js"
-        }
-    },
-    "files": [
-        "dist",
-        "src"
-    ],
-    "dependencies": {
-        "@elizaos/core": "1.0.9"
-    },
-    "peerDependencies": {
-        "whatwg-url": "7.1.0"
-    },
-    "peerDependenciesMeta": {
-        "@elizaos/core": {
-            "optional": false
-        },
-        "whatwg-url": {
-            "optional": true
-        }
-    },
-    "scripts": {
-        "build": "tsup --format esm --dts",
-        "dev": "tsup --format esm --dts --watch",
-        "lint": "eslint --fix  --cache ."
-    },
-    "devDependencies": {
-        "@types/node": "^22.13.4",
-        "tsup": "8.3.5",
-        "typedoc": "^0.26.11",
-        "typescript": "~5.6.3"
+  "name": "@elizaos/plugin-messari-ai-toolkit",
+  "version": "1.0.0",
+  "description": "Messari AI Toolkit plugin for ElizaOS - provides crypto market research capabilities",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "Messari Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/messari/plugin-messari-ai-toolkit"
+  },
+  "keywords": [
+    "elizaos",
+    "plugin",
+    "messari",
+    "crypto",
+    "market-research",
+    "ai",
+    "blockchain"
+  ],
+  "agentConfig": {
+    "pluginType": "elizaos:plugin:1.0.0",
+    "pluginParameters": {
+      "MESSARI_API_KEY": {
+        "type": "string",
+        "description": "API key for accessing Messari's AI Toolkit services",
+        "required": true,
+        "sensitive": true
+      }
     }
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@elizaos/core": "latest"
+  },
+  "peerDependencies": {
+    "whatwg-url": "7.1.0"
+  },
+  "peerDependenciesMeta": {
+    "@elizaos/core": {
+      "optional": false
+    },
+    "whatwg-url": {
+      "optional": true
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "prettier --write ./src",
+    "clean": "rm -rf dist .turbo node_modules .turbo-tsconfig.json tsconfig.tsbuildinfo",
+    "format": "prettier --write ./src",
+    "format:check": "prettier --check ./src",
+    "test": "bun test",
+    "test:watch": "bun test --watch",
+    "test:coverage": "bun test --coverage"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.4",
+    "tsup": "8.3.5",
+    "prettier": "^3.0.0",
+    "bun": "^1.2.15",
+    "@types/bun": "latest",
+    "typescript": "^5.0.0"
+  }
 }
