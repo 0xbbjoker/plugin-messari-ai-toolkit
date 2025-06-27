@@ -1,6 +1,6 @@
 {
   "name": "@elizaos/plugin-messari-ai-toolkit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Messari AI Toolkit plugin for ElizaOS - provides crypto market research capabilities",
   "type": "module",
   "main": "dist/index.js",
