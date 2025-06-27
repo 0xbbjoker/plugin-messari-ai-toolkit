@@ -1,9 +1,10 @@
 import {
-  AgentRuntime as IAgentRuntime,
+  IAgentRuntime,
   elizaLogger,
   composePrompt,
+  ModelType,
 } from "@elizaos/core";
-import type { Memory, Provider, State } from "@elizaos/core";
+import type { Memory, Provider, State, ProviderResult } from "@elizaos/core";
 
 // Configuration constants
 const CONFIG = {
@@ -65,7 +66,7 @@ Examples:
  */
 async function callMessariAPI(
   apiKey: string,
-  question: string
+  question: string,
 ): Promise<string | null> {
   try {
     const response = await fetch(CONFIG.API_ENDPOINT, {
@@ -120,7 +121,7 @@ function getRecentMessages(state?: State): string {
   return (
     state?.recentMessagesData
       ?.slice(-CONFIG.RECENT_MESSAGES_COUNT)
-      .map((m) => m.content.text)
+      .map((m: Memory) => m.content.text || "")
       .join("\n") || ""
   );
 }
@@ -133,11 +134,11 @@ function getRecentMessages(state?: State): string {
  */
 async function generateText(
   runtime: IAgentRuntime,
-  prompt: string
+  prompt: string,
 ): Promise<string> {
   try {
     // Use the text generation model
-    const response = await runtime.useModel("TEXT_SMALL", {
+    const response = await runtime.useModel(ModelType.TEXT_SMALL, {
       prompt: prompt,
       maxTokens: 150,
       temperature: 0.1,
@@ -151,15 +152,23 @@ async function generateText(
 
 const copilotProvider: Provider = {
   name: "messariCopilot",
-  get: async (runtime: IAgentRuntime, message: Memory, state: State) => {
+  description:
+    "Provides access to Messari's AI Toolkit for crypto market research and analysis",
+  get: async (
+    runtime: IAgentRuntime,
+    message: Memory,
+    state: State,
+  ): Promise<ProviderResult> => {
     const apiKey = runtime.getSetting(CONFIG.ENV_API_KEY);
     if (!apiKey) {
       elizaLogger.error("Messari API key not found in runtime settings");
-      return null;
+      return {
+        text: "Messari API key not configured. Please set MESSARI_API_KEY in your environment.",
+      };
     }
 
     const contextState = {
-      currentMessage: message.content.text,
+      currentMessage: message.content.text || "",
       recentMessages: getRecentMessages(state),
     };
 
@@ -176,7 +185,9 @@ const copilotProvider: Provider = {
 
     if (copilotQuestion === "NONE" || !copilotQuestion.trim()) {
       elizaLogger.info("No research questions identified in the message");
-      return null;
+      return {
+        text: "No research questions identified in your message. Please ask a specific question about crypto markets, protocols, or metrics.",
+      };
     }
 
     elizaLogger.info("Processing research question", {
@@ -185,7 +196,11 @@ const copilotProvider: Provider = {
 
     const result = await callMessariAPI(apiKey, copilotQuestion);
 
-    return result ? { text: result } : null;
+    return {
+      text:
+        result ||
+        "Unable to fetch data from Messari API. Please try again later.",
+    };
   },
 };
 

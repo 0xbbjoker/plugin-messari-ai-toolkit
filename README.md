@@ -15,7 +15,7 @@ This plugin integrates Messari's enterprise AI Toolkit with Eliza OS, enabling y
 ## 📋 Requirements
 
 - **Eliza OS**: v1.0.9 or higher
-- **Node.js**: v18+ 
+- **Node.js**: v18+
 - **Messari API Key**: Enterprise access required
 
 ## 📦 Installation
@@ -114,15 +114,19 @@ pnpm test:coverage
 ### Common Issues
 
 1. **API Key Not Found**
+
    ```
    Error: Messari API key not found in runtime settings
    ```
+
    **Solution**: Ensure `MESSARI_API_KEY` is set in your `.env` file
 
 2. **Plugin Not Loading**
+
    ```
    Error: Plugin messariAiToolkit failed to load
    ```
+
    **Solution**: Verify the plugin is listed in your character's `plugins` array
 
 3. **No Research Questions Detected**
